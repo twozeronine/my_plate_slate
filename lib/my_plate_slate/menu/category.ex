@@ -11,7 +11,6 @@ defmodule MyPlateSlate.Menu.Category do
     timestamps()
   end
 
-
   def changeset(%__MODULE__{} = category, params) do
     category
     |> cast(params, [:description, :name])

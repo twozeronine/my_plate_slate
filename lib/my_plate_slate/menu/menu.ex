@@ -31,7 +31,6 @@ defmodule MyPlateSlate.Menu do
     Category.changeset(category, %{})
   end
 
-
   def list_items do
     Repo.all(Item)
   end

@@ -11,7 +11,6 @@ config :my_plate_slate, MyPlateSlate.Repo,
   port: 25432
 
 config :my_plate_slate, MyPlateSlateWeb.Endpoint,
-
   http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
   code_reloader: true,
