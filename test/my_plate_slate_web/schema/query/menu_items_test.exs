@@ -15,7 +15,7 @@ defmodule MyPlateSlateWeb.Schema.Query.MenuItemsTest do
 
   test "menuItems field returns menu items" do
     conn = build_conn()
-    conn = get conn, "/api", query: @query
+    conn = get(conn, "/api", query: @query)
 
     assert json_response(conn, 200) == %{
              "data" => %{
