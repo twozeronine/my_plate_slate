@@ -3,6 +3,8 @@ defmodule MyPlateSlate.Menu do
   alias MyPlateSlate.Menu.Category
   alias MyPlateSlate.Menu.Item
 
+  import Ecto.Query
+
   def list_categories() do
     Repo.all(Category)
   end
@@ -31,7 +33,13 @@ defmodule MyPlateSlate.Menu do
     Category.changeset(category, %{})
   end
 
-  def list_items do
+  def list_items(%{matching: name}) when is_binary(name) do
+    Item
+    |> where([m], ilike(m.name, ^"%#{name}"))
+    |> Repo.all()
+  end
+
+  def list_items(_) do
     Repo.all(Item)
   end
 
