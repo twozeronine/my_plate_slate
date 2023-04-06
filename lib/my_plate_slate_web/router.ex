@@ -14,6 +14,16 @@ defmodule MyPlateSlateWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/" do
+    pipe_through :api
+
+    forward "/api", Absinthe.Plug, schema: MyPlateSlateWeb.Schema
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: MyPlateSlateWeb.Schema,
+      interface: :simple
+  end
+
   scope "/", MyPlateSlateWeb do
     pipe_through :browser
 
@@ -27,14 +37,6 @@ defmodule MyPlateSlateWeb.Router do
       pipe_through :browser
 
       live_dashboard "/dashboard", metrics: MyPlateSlateWeb.Telemetry
-    end
-  end
-
-  if Mix.env() == :dev do
-    scope "/dev" do
-      pipe_through :browser
-
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
 end
