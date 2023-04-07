@@ -74,7 +74,8 @@ defmodule MyPlateSlateWeb.Schema.Query.MenuItemsTest do
              ]
            } = json_response(response, 200)
 
-    assert message == "Argument \"filter\" has invalid value {name: 123}.\nIn field \"name\": Expected type \"String\", found 123."
+    assert message ==
+             "Argument \"filter\" has invalid value {name: 123}.\nIn field \"name\": Expected type \"String\", found 123."
   end
 
   @query """
@@ -153,9 +154,10 @@ defmodule MyPlateSlateWeb.Schema.Query.MenuItemsTest do
   @variables %{filter: %{"tag" => "Vegetarian", "category" => "Sandwiches"}}
   test "menuItems field returns menuItems, filtering with a variable" do
     response = get(build_conn(), "/api", query: @query, variables: @variables)
+
     assert %{
-      "data" => %{"menuItems" => [%{"name" => "Vada Pav"}]}
-    } == json_response(response, 200)
+             "data" => %{"menuItems" => [%{"name" => "Vada Pav"}]}
+           } == json_response(response, 200)
   end
 
   @query """
@@ -169,19 +171,22 @@ defmodule MyPlateSlateWeb.Schema.Query.MenuItemsTest do
   @variables %{filter: %{"addedBefore" => "2017-01-20"}}
   test "menuItems filtered by custom scalar" do
     sides = MyPlateSlate.Repo.get_by!(MyPlateSlate.Menu.Category, name: "Sides")
+
     %MyPlateSlate.Menu.Item{
       name: "Garlic Fries",
       added_on: ~D[2017-01-01],
       price: 2.50,
       category: sides
-    } |> MyPlateSlate.Repo.insert!
+    }
+    |> MyPlateSlate.Repo.insert!()
 
     response = get(build_conn(), "/api", query: @query, variables: @variables)
+
     assert %{
-      "data" => %{
-        "menuItems" => [%{"name" => "Garlic Fries", "addedOn" => "2017-01-01"}]
-      }
-    } == json_response(response, 200)
+             "data" => %{
+               "menuItems" => [%{"name" => "Garlic Fries", "addedOn" => "2017-01-01"}]
+             }
+           } == json_response(response, 200)
   end
 
   @query """
@@ -195,14 +200,22 @@ defmodule MyPlateSlateWeb.Schema.Query.MenuItemsTest do
   test "menuItems filtered by custom scalar with error" do
     response = get(build_conn(), "/api", query: @query, variables: @variables)
 
-    assert %{"errors" => [%{"locations" => [
-      %{"column" => 13, "line" => 2}], "message" => message}
-      ]} = json_response(response, 200)
+    assert %{
+             "errors" => [
+               %{
+                 "locations" => [
+                   %{"column" => 13, "line" => 2}
+                 ],
+                 "message" => message
+               }
+             ]
+           } = json_response(response, 200)
 
     expected = """
     Argument "filter" has invalid value $filter.
     In field "addedBefore": Expected type "Date", found "not-a-date".\
     """
+
     assert expected == message
   end
 end
