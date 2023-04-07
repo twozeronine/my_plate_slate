@@ -33,8 +33,8 @@ defmodule MyPlateSlate.Menu do
     Category.changeset(category, %{})
   end
 
-  def list_items(filters) do
-    filters
+  def list_items(args) do
+    args
     |> Enum.reduce(Item, fn
       {:order, order}, query ->
         query |> order_by({^order, :name})
@@ -55,6 +55,12 @@ defmodule MyPlateSlate.Menu do
 
       {:priced_below, price}, query ->
         from q in query, where: q.price <= ^price
+
+      {:added_atfer, date}, query ->
+        from q in query, where: q.added_on >= ^date
+
+      {:added_before, date}, query ->
+        from q in query, where: q.added_on <= ^date
 
       {:category, category_name}, query ->
         from q in query,
