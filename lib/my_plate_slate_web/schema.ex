@@ -38,4 +38,24 @@ defmodule MyPlateSlateWeb.Schema do
       Date.to_iso8601(date)
     end)
   end
+
+  scalar :decimal do
+    parse(fn
+      %{value: value}, _ ->
+        {decimal, _} = Decimal.parse(value)
+        decimal
+
+      _, _ ->
+        :error
+    end)
+
+    serialize(&Decimal.to_string/1)
+  end
+
+  mutation do
+    field :create_menu_item, :menu_item do
+      arg(:input, non_null(:menu_item_input))
+      resolve(&Resolvers.Menu.create_item/3)
+    end
+  end
 end

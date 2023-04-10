@@ -27,14 +27,24 @@ defmodule MyPlateSlateWeb.Schema.MenuTypes do
     field :added_after, :date
   end
 
+  input_object :menu_item_input do
+    field :name, non_null(:string)
+    field :description, :string
+    field :price, non_null(:decimal)
+    field :category_id, non_null(:id)
+  end
+
   object :menu_item do
+    interfaces([:search_result])
     field :id, :id
     field :name, :string
     field :description, :string
+    field :price, :decimal
     field :added_on, :date
   end
 
   object :category do
+    interfaces([:search_result])
     field :name, :string
     field :description, :string
 
@@ -43,8 +53,8 @@ defmodule MyPlateSlateWeb.Schema.MenuTypes do
     end
   end
 
-  union :search_result do
-    types([:menu_item, :category])
+  interface :search_result do
+    field :name, :string
 
     resolve_type(fn
       %MyPlateSlate.Menu.Item{}, _ ->
