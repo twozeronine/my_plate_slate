@@ -43,13 +43,13 @@ defmodule MyPlateSlateWeb.Schema do
     parse(fn
       %{value: value}, _ ->
         {decimal, _} = Decimal.parse(value)
-        decimal
+        {:ok, decimal}
 
       _, _ ->
         :error
     end)
 
-    serialize(&Decimal.to_string/1)
+    serialize(&to_string/1)
   end
 
   mutation do
