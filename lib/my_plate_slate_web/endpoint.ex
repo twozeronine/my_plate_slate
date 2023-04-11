@@ -1,5 +1,6 @@
 defmodule MyPlateSlateWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :my_plate_slate
+  use Absinthe.Phoenix.Endpoint
 
   @session_options [
     store: :cookie,

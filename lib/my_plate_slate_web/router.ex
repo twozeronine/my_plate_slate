@@ -21,7 +21,8 @@ defmodule MyPlateSlateWeb.Router do
 
     forward "/graphiql", Absinthe.Plug.GraphiQL,
       schema: MyPlateSlateWeb.Schema,
-      interface: :simple
+      interface: :simple,
+      socket: MyPlateSlateWeb.UserSocket
   end
 
   scope "/", MyPlateSlateWeb do

@@ -7,7 +7,8 @@ defmodule MyPlateSlate.Application do
       MyPlateSlate.Repo,
       MyPlateSlateWeb.Telemetry,
       {Phoenix.PubSub, name: MyPlateSlate.PubSub},
-      MyPlateSlateWeb.Endpoint
+      MyPlateSlateWeb.Endpoint,
+      {Absinthe.Subscription, pubsub: MyPlateSlateWeb.Endpoint}
     ]
 
     opts = [strategy: :one_for_one, name: __MODULE__]
