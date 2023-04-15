@@ -4,7 +4,6 @@ defmodule MyPlateSlate.Ordering do
 
   alias MyPlateSlate.Ordering.Order
 
-
   def list_orders do
     Repo.all(Order)
   end

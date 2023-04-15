@@ -60,8 +60,8 @@ defmodule MyPlateSlateWeb.Schema do
     end
 
     field :place_order, :order_result do
-      arg :input, non_null(:place_order_input)
-      resolve &Resolvers.Ordering.place_order/3
+      arg(:input, non_null(:place_order_input))
+      resolve(&Resolvers.Ordering.place_order/3)
     end
   end
 
@@ -69,5 +69,11 @@ defmodule MyPlateSlateWeb.Schema do
   object :input_error do
     field :key, non_null(:string)
     field :message, non_null(:string)
+  end
+
+  subscription do
+    field :new_order, :order do
+      config(fn _args, _info -> {:ok, topic: "*"} end)
+    end
   end
 end
